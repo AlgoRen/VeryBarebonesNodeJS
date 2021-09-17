@@ -1,0 +1,187 @@
+[
+    {
+        "id": 23593,
+        "time": {
+            "from": "22:10",
+            "to": "23:10"
+        },
+        "weather": {
+            "rainAmount": 0.12,
+            "preceptiationChance": 20,
+            "temprature": 69,
+            "feelsLike": 70,
+            "humidity": 58,
+            "wind": {
+                "speed": 2.03,
+                "direction": 252,
+                "gust": 5.46
+            },
+            "visibility": 10000
+        },
+        "location": {
+            "id": 593422,
+            "coord": {
+                "lat": 28.651,
+                "long": -81.502
+            },
+            "city": {
+                "id": 593420,
+                "name": "Apopka",
+                "coord": {
+                    "lat": 28.681,
+                    "long": -81.510
+                }
+            },
+            "state": "Florida",
+            "country,": "US"
+        }
+    },
+    {
+        "id": 22593,
+        "time": {
+            "from": "21:10",
+            "to": "22:10"
+        },
+        "weather": {
+            "rainAmount": 0.12,
+            "preceptiationChance": 20,
+            "temprature": 69,
+            "feelsLike": 71,
+            "humidity": 62,
+            "wind": {
+                "speed": 2.09,
+                "direction": 250,
+                "gust": 5.46
+            },
+            "visibility": 10000
+        },
+        "location": {
+            "id": 593422,
+            "coord": {
+                "lat": 28.651,
+                "long": -81.502
+            },
+            "city": {
+                "id": 593420,
+                "name": "Apopka",
+                "coord": {
+                    "lat": 28.681,
+                    "long": -81.510
+                }
+            },
+            "state": "Florida",
+            "country,": "US"
+        }
+    },
+    {
+        "id": 21593,
+        "time": {
+            "from": "20:10",
+            "to": "21:10"
+        },
+        "weather": {
+            "rainAmount": 0.12,
+            "preceptiationChance": 20,
+            "temprature": 74,
+            "feelsLike": 76,
+            "humidity": 62,
+            "wind": {
+                "speed": 2.33,
+                "direction": 232,
+                "gust": 5.46
+            },
+            "visibility": 10000
+        },
+        "location": {
+            "id": 593422,
+            "coord": {
+                "lat": 28.651,
+                "long": -81.502
+            },
+            "city": {
+                "id": 593420,
+                "name": "Apopka",
+                "coord": {
+                    "lat": 28.681,
+                    "long": -81.510
+                }
+            },
+            "state": "Florida",
+            "country,": "US"
+        }
+    },
+    {
+        "id": 20593,
+        "time": {
+            "from": "19:10",
+            "to": "20:10"
+        },
+        "weather": {
+            "rainAmount": 0.25,
+            "preceptiationChance": 25,
+            "temprature": 77,
+            "feelsLike": 77,
+            "humidity": 65,
+            "wind": {
+                "speed": 1.03,
+                "direction": 252,
+                "gust": 2.46
+            },
+            "visibility": 10000
+        },
+        "location": {
+            "id": 593422,
+            "coord": {
+                "lat": 28.651,
+                "long": -81.502
+            },
+            "city": {
+                "id": 593420,
+                "name": "Apopka",
+                "coord": {
+                    "lat": 28.681,
+                    "long": -81.510
+                }
+            },
+            "state": "Florida",
+            "country,": "US"
+        }
+    },
+    {
+        "id": 19593,
+        "time": {
+            "from": "18:10",
+            "to": "19:10"
+        },
+        "weather": {
+            "rainAmount": 0.29,
+            "preceptiationChance": 30,
+            "temprature": 78,
+            "feelsLike": 79,
+            "humidity": 69,
+            "wind": {
+                "speed": 6.03,
+                "direction": 221,
+                "gust": 9.46
+            },
+            "visibility": 10000
+        },
+        "location": {
+            "id": 593422,
+            "coord": {
+                "lat": 28.651,
+                "long": -81.502
+            },
+            "city": {
+                "id": 593420,
+                "name": "Apopka",
+                "coord": {
+                    "lat": 28.681,
+                    "long": -81.510
+                }
+            },
+            "state": "Florida",
+            "country,": "US"
+        }
+    }
+]
