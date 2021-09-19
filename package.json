@@ -1,0 +1,21 @@
+{
+  "name": "zbk_backend_with_vanilla_nodejs",
+  "version": "1.0.0",
+  "description": "Creating a portfolio ready version of ZBK's backend with only plain ol nodejs.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "Nodejs",
+    "REST",
+    "API",
+    "Javascript"
+  ],
+  "author": "Ren",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
