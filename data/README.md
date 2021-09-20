@@ -14,6 +14,6 @@ most likely include the location data; I find this great, confirmation that the 
 I am recieving will match the location that I inputed. Finally, within location
 you will notice they are two sets of "id" and "coord" parameters. The "id" and "coord"
 parameters directly inside the location object refer to the exact location the 
-weather data was requested to, and the "id" and "coord" parameters within city
+weather data was requested for, and the "id" and "coord" parameters within city
 object refer to the specific city that location is in which may be used for
 either catagorization, labeling, or verification purposes.
