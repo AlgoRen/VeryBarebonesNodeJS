@@ -1,7 +1,18 @@
 const http = require('http') // Server import
+const weatherData = require('./data/weather.json') // Weather data from weather.json object.
 
 const server = http.createServer((req, res) => {
     console.log("Hello there.")
+    if (req.url === '/weather') { // Sends all weather data
+        res.writeHead(200, { 'Content-Type': 'application/json'})
+        res.end(JSON.stringify(weatherData))
+    } else if (req.url === '/') { // Sends a welcome message
+        res.writeHead(200, {'Content-Type': 'text/html'})
+        res.end('Welcome to the Home route.')
+    } else { // Sends a error message with a 404
+        res.writeHead(404, {'Content-Type': 'application/json'})
+        res.end(JSON.stringify({ message : 'Route Not Found' }))
+    }
 }) // Create server
 
 const PORT = process.env.port || 5000 // Port setup, checking for enviorment variable if not use 5000.
