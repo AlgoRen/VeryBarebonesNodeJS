@@ -1,11 +1,10 @@
 const http = require('http') // Server import
-const weatherData = require('./data/weather.json') // Weather data from weather.json object.
+const { getAllWeather } = require('./controller/weatherController') // Weather controller
 
 const server = http.createServer((req, res) => {
     console.log("Hello there.")
-    if (req.url === '/weather') { // Sends all weather data
-        res.writeHead(200, { 'Content-Type': 'application/json'})
-        res.end(JSON.stringify(weatherData))
+    if (req.url === '/weather' && req.method === 'GET') { // Sends all weather data
+        getAllWeather(req, res)
     } else if (req.url === '/') { // Sends a welcome message
         res.writeHead(200, {'Content-Type': 'text/html'})
         res.end('Welcome to the Home route.')
@@ -20,12 +19,15 @@ const PORT = process.env.port || 5000 // Port setup, checking for enviorment var
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`)) // Listening for server request.
 
 // TODOs
-// Create a GET route that loads a message on how to format a request using
+// Create a route that loads a message on how to format a request using
 // parameters in order to interact with the location and weather features of
 // our API. The GET route will be placed on the '/' route and any incorrectly
 // formatted route.
 // Example route: 'localhost:5000/'
 // or a nonvalid route of 'localhost:5000/icecream/'
+
+// Create a GET route that returns all weather data.
+// Example route: 'localhost:5000/weather/'
 
 // Create a POST route that will send return all weather data for the location
 // that is found in our weather.json (Apopka). Requesting any other city should
