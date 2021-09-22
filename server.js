@@ -1,14 +1,16 @@
 const http = require('http') // Server import
 const { getAllWeather } = require('./controller/weatherController') // Weather controller
+const { getInstructions } = require('./controller/index')
 
 const server = http.createServer((req, res) => {
     console.log("Hello there.")
     if (req.url === '/weather' && req.method === 'GET') { // Sends all weather data
         getAllWeather(req, res)
-    } else if (req.url === '/') { // Sends a welcome message
-        res.writeHead(200, {'Content-Type': 'text/html'})
-        res.end('Welcome to the Home route.')
-    } else { // Sends a error message with a 404
+    } else if (req.url === '/') { 
+        // Sends a welcome message along with instructions on how to use ZBK's api.
+        getInstructions(req, res)
+    } else { 
+        // Sends a error message with a 404
         res.writeHead(404, {'Content-Type': 'application/json'})
         res.end(JSON.stringify({ message : 'Route Not Found' }))
     }

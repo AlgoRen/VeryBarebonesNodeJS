@@ -1,0 +1,1 @@
+Will put instructions for /weather/hours route here
