@@ -1,1 +1,20 @@
-Will put instructions for /weather/hours route here
+General Overview of the /weather route within ZBK's API:
+To get a quick example of the data that ZBK's /weather route send a GET request
+to  '/weather/all'. This returns all weather data currently stored.
+
+To get weather data pertaining to a specific city send a GET request to route 
+'weather/{city}' replace {city} with the city name of your choice. 
+NOTE: Currently only supports one city, Apopka. Hahahaha XD
+
+How to use the weather/hours route:
+Send GET requests only!
+To get weather data for a specific hours attach the parameter from={0-23} 
+followed by the '&' sign followed by to={0-23} to get weather data for the
+hours between those times. Both the from and to parameter are inclusive. The 
+from and to parameter use a 24 hour clock. An example of a call: 
+'weather/hour?from=19&to=23' 
+...this will get all data ZBK has for those hours. Or you may call:
+'weather/apopka/hours?from=19&to=23' to get those hours' weather in that city,
+as only one city is currently supported both GET request will send the same data.
+
+Have fun and explore! -ZBK 

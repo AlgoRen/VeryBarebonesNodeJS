@@ -8,7 +8,7 @@ const pathToMainRoute = '../data/instructions/main_route.txt'
 //  Read instructions from passed in route with fs.readFile
 function readData(route) { 
     let instructions = readFileSync(path.join(__dirname, route), 'utf8')
-    console.log("readData scope index.js: " + instructions)
+    console.log("readData scope index.js: \n" + instructions)
     return instructions
 }
 
@@ -17,7 +17,7 @@ function readData(route) {
 function getMainRouteInstructions() {
     return new Promise((resolve, reject) => {
         let mainRouteInstructions = readData(route = pathToMainRoute)
-        console.log("getmainRouteInstructions scope: " + mainRouteInstructions)
+        console.log("getmainRouteInstructions scope: \n" + mainRouteInstructions)
         resolve(mainRouteInstructions)
         reject('Something went wrong.')
     })
@@ -30,7 +30,7 @@ const getWeatherHourRouteInstructions = readFile(
     (err, data) => {
     if (err) throw err
     // Console logging data for testing purposes.
-    console.log("Debug: " + data.toString()) 
+    console.log("Debug: \n" + data.toString()) 
 })
 
 // Read instructions from weather_route_hours.txt with fs.readFile
@@ -40,7 +40,7 @@ const getWeatherHoursRouteInstructions = readFile(
     (err, data) => {
     if (err) throw err
     // Console logging data for testing purposes.
-    console.log("Debug: " + data.toString()) 
+    console.log("Debug: \n" + data.toString()) 
 })
 
 

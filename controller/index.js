@@ -13,7 +13,7 @@ async function getInstructions(req, res) {
         //  instructions. Currently defaulting to load main route instructions, 
         //  as it is the only one I've completed thus far.
         const mainRouteInstructions = await readInstructions.getMainRouteInstructions()
-        console.log("Inside getInstructions: " + mainRouteInstructions)
+        console.log("Inside getInstructions: \n" + mainRouteInstructions)
         res.writeHead(200, {'Content-Type': 'text/html'})
         res.end(mainRouteInstructions)
     } catch (error) {
