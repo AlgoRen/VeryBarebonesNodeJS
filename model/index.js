@@ -1,9 +1,14 @@
 //  Model for returning data from the data folder that has to deal with 
 //  instructions, error handling, and other misc. uses.
 
-const { readFile, readFileSync } = require('fs')
+//  Imports
+const { readFileSync } = require('fs')
 const path = require('path')
+
+//  Routes
 const pathToMainRoute = '../data/instructions/main_route.txt'
+const pathToWeatherHourRoute = '../data/instructions/weather_route_hour.txt'
+const pathToWeatherHoursRoute = '../data/instructions/weather_route_hours.txt'
 
 //  Read instructions from passed in route with fs.readFile
 function readData(route) { 
@@ -12,36 +17,38 @@ function readData(route) {
     return instructions
 }
 
-//  Gets instructions by passing in the route to main_route.txt into the
+//  Get instructions by passing in the route to main_route.txt into the
 //  readData function, resolves getMainRouteInstructions with the text data.
 function getMainRouteInstructions() {
     return new Promise((resolve, reject) => {
         let mainRouteInstructions = readData(route = pathToMainRoute)
         console.log("getmainRouteInstructions scope: \n" + mainRouteInstructions)
         resolve(mainRouteInstructions)
-        reject('Something went wrong.')
+        reject('Something went wrong for getMainRouteInstructions.')
     })
 }
 
-// Read instructions from weather_route_hour.txt with fs.readFile
-const getWeatherHourRouteInstructions = readFile(
-    path.join(__dirname, '../data/instructions/weather_route_hour.txt'), 
-    'utf8', 
-    (err, data) => {
-    if (err) throw err
-    // Console logging data for testing purposes.
-    console.log("Debug: \n" + data.toString()) 
-})
+//  Get instructions by passing in the route to weather_route_hour.txt into the
+//  readData function, resolves getMainRouteInstructions with the text data.
+function getWeatherHourRouteInstructions() {
+    return new Promise((resolve, reject) => {
+        let weatherHourInstructions = readData(route = pathToWeatherHourRoute)
+        console.log("getmainRouteInstructions scope: \n" + weatherHourInstructions)
+        resolve(weatherHourInstructions)
+        reject('Something went wrong for getWeatherHourRouteInstructions.')
+    })
+}
 
-// Read instructions from weather_route_hours.txt with fs.readFile
-const getWeatherHoursRouteInstructions = readFile(
-    path.join(__dirname, '../data/instructions/weather_route_hours.txt'), 
-    'utf8', 
-    (err, data) => {
-    if (err) throw err
-    // Console logging data for testing purposes.
-    console.log("Debug: \n" + data.toString()) 
-})
+//  Get instructions by passing in the route to weather_route_hours.txt into the
+//  readData function, resolves getWeatherHoursRouteInstructions with the text data.
+function getWeatherHoursRouteInstructions() {
+    return new Promise((resolve, reject) => {
+        let weatherHoursInstructions = readData(route = pathToWeatherHoursRoute)
+        console.log("getWeatherHoursInstructions scope: \n" + weatherHoursInstructions)
+        resolve(weatherHoursInstructions)
+        reject('Something went wrong for getWeatherHoursRouteInstructions.')
+    })
+}
 
 
  module.exports = {

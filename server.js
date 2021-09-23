@@ -1,15 +1,26 @@
-const http = require('http') // Server import
-const { getAllWeather } = require('./controller/weatherController') // Weather controller
+const http = require('http')
+const url = require('url')
+const UrlPattern = require('url-pattern')
+
 const { getInstructions } = require('./controller/index')
+const { evaluateWeatherURL } = require('./controller/weatherController')
 
 const server = http.createServer((req, res) => {
     console.log("Hello there.")
-    if (req.url === '/weather' && req.method === 'GET') { // Sends all weather data
-        getAllWeather(req, res)
-    } else if (req.url === '/') { 
+    const locationURL = new UrlPattern('/location(/:anything)')
+    console.log("Console log req.path: " + req.url)
+    console.log("Console log path split, weather: " + req.url.split('/')[1])
+
+    if (req.url.split('/')[1] === 'weather' && req.method === 'GET') { 
         // Sends a welcome message along with instructions on how to use ZBK's api.
+        evaluateWeatherURL(req, res)
+    } else if (locationURL.match(req.url) && req.method === 'GET') { 
+        res.writeHead(400, {'Content-Type': 'application/json'})
+        res.end(JSON.stringify({ message : 'Currently not supported' }))
+    } else if (req.url === '/') {
         getInstructions(req, res)
-    } else { 
+    }
+    else { 
         // Sends a error message with a 404
         res.writeHead(404, {'Content-Type': 'application/json'})
         res.end(JSON.stringify({ message : 'Route Not Found' }))
@@ -29,7 +40,7 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`)) // List
 // or a nonvalid route of 'localhost:5000/icecream/'
 
 // Create a GET route that returns all weather data.
-// Example route: 'localhost:5000/weather/'
+// Example route: 'localhost:5000/weather/all/'
 
 // Create a POST route that will send return all weather data for the location
 // that is found in our weather.json (Apopka). Requesting any other city should
