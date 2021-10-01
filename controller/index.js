@@ -1,78 +1,110 @@
 //  Controller for handling the use of routes that provide instructions, 
 //  error handling, and other misc. uses.
-const url = require('url')
 
-const readInstructions = require('../model/index')
+const errorHandler = require('./error')
+const {
+    getWeatherHourRouteInstructions, 
+    getWeatherHoursRouteInstructions, 
+    getMainRouteInstructions
+} = require('../model/index')
 
 // const hourCityWeatherURL = new UrlPattern('/weather(/:anything)(/hour?time=)(:validhour)')
 // const allWeatherURL = new UrlPattern('/weather(/:anything)(/all)')
+
+
+async function homeRouteInstructions(req, res) {
+    try {
+        mainRouteInstructions = await getMainRouteInstructions()
+        res.writeHead(200, {"Content-Type": "text/html"})
+        res.end(mainRouteInstructions)
+
+    } catch (error) {
+        errorHandler.sendOutErrors(req, res, error)
+    }
+}
+
+
+async function weatherHourInstructions(res) {
+    try {
+        weatherHourInstructions = await getWeatherHourRouteInstructions()
+        res.writeHead(200, {"Content-Type": "text/html"})
+        res.end(mainRouteInstructions)
+
+    } catch (error) {
+        errorHandler.sendOutErrors(req, res, error)
+    }
+}
+
+
+async function weatherHoursInstructions(res) {
+    try {
+        weatherHoursInstructions = await getWeatherHoursRouteInstructions()
+        res.writeHead(200, {"Content-Type": "text/html"})
+        res.end(mainRouteInstructions)
+
+    } catch (error) {
+        errorHandler.sendOutErrors(req, res, error)
+    }
+}
+
+
+async function errorRouteInstructions(req, res, error, routeInstructions) {
+    console.log(error)
+    try {
+        res.writeHead(200, {"Content-Type": "application/json"})
+        res.end(JSON.stringify([
+            {"error": error}, 
+            {"message": routeInstructions}
+        ]))
+    } catch (error) {
+        errorHandler.sendOutErrors(req, res, error)
+    }
+}
+
 
 //  Uses an async Await function to get instructions based on the passed in req
 //  parameter to call the appropriate method on readInstructions module.
 
 //  @desc   Get instructions on how to use api
 //  @route  '/' or any route not defined as a valid route
-async function getInstructions(req, res) {
+async function getInstructions(req, res, error, pathname) {
+    console.log("Inside getInstructions(): ", error)
+
+
     try {
-        //  Use a switch case to get the route, using req, to load correct 
-        //  instructions. Currently defaulting to load main route instructions, 
-        //  as it is the only one I've completed thus far.
-
-        console.log("Inside getInstructions: \n" + req.url.split('/')[3])
-        console.log("Inside getInstructions: \n" + req.url.split('/')[2])
-
-        let weatherHourInstructions = ''
-        let weatherHoursInstructions = ''
-
-        //  Switch case to determine which set of instructions should be returned.
-        switch (true) {
-            //  Splits the req.url into an array and checks the third index for
-            // a value of 'hour' Ex: /weather/hour/whateverelse/maybesent
-            // Note the first index value of req.url returns an empty string and
-            // the second index value is 'weather'.
-            case req.url.split('/')[2] === 'hour':
-                weatherHourInstructions = await readInstructions.getWeatherHourRouteInstructions()
-                res.writeHead(200, { 'Content-Type': 'text/html' })
-                res.end(weatherHourInstructions)
+        //  FUNCTION CHANGE
+        //  Change function into a function that is called when parameters within
+        //  a route are incorrect, call getInstructions with the pathname passed in,
+        //  the error being sent to call the appropriate instructions that will be 
+        //  return the await call so that routes controller can handle the response.
+        switch (error) {
+            case "Must follow city/ with a city name.":
+                console.log("Inside switch case getInstructions(): ", error)
+                instructionsToUse = await getMainRouteInstructions()
+                errorRouteInstructions(req, res, error, instructionsToUse)
                 break;
-
-            case req.url.split('/')[3] === 'hour':
-                weatherHourInstructions = await readInstructions.getWeatherHourRouteInstructions()
-                res.writeHead(200, { 'Content-Type': 'text/html' })
-                res.end(weatherHourInstructions)
+            case `Must follow hour with a ?time parameter 
+            followed by a time value.`:
+                console.log("Inside switch case getInstructions(): ", error)
+                instructionsToUse = await getWeatherHourRouteInstructions()
+                errorRouteInstructions(req, res, error, instructionsToUse)
                 break;
-
-
-            //  Splits the req.url into an array and checks the third index for
-            // a value of 'hours' Ex: /weather/hours/whateverelse/maybesent
-            // Note the first index value of req.url returns an empty string and
-            // the second index value is 'weather'.
-            case req.url.split('/')[2] === 'hours':
-                weatherHoursInstructions = await readInstructions.getWeatherHoursRouteInstructions()
-                res.writeHead(200, { 'Content-Type': 'text/html' })
-                res.end(weatherHourInstructions)
-                break;
-
-            case req.url.split('/')[3] === 'hours':
-                weatherHoursInstructions = await readInstructions.getWeatherHoursRouteInstructions()
-                res.writeHead(200, { 'Content-Type': 'text/html' })
-                res.end(weatherHourInstructions)
-                break;
-
             default:
-                const mainRouteInstructions = await readInstructions.getMainRouteInstructions()
-                res.writeHead(200, { 'Content-Type': 'text/html' })
-                res.end(mainRouteInstructions)
+                console.log("This happened.")
                 break;
         }
 
     } catch (error) {
-        //  Simply throw error
-        if (error) throw error
+        //  Error message
+        console.log(error)
+        errorHandler.sendOutErrors(req, res, error)
     }
 }
 
 
 module.exports = {
-    getInstructions
+    getInstructions,
+    homeRouteInstructions,
+    weatherHourInstructions,
+    weatherHoursInstructions
 }
