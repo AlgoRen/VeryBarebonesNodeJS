@@ -23,7 +23,7 @@ function findCity(city_name) {
 
 function findHour(hour) {
     //  Returns a new promise, rejects only if code fails to execute. Will return an 
-    //  an empty array if no data is found.
+    //  empty array if no data is found.
     return new Promise((resolve, reject) => {
         //  Calls filter HOA method on WeatherData array to check each objects'
         //  time.from property hour value to filter out any objects that do not
@@ -38,6 +38,8 @@ function findHour(hour) {
         resolve(hourObjects)
     })
 }
+
+
 
 module.exports = {
     findAll,

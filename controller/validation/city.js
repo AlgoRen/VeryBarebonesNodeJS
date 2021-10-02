@@ -13,15 +13,8 @@ async function isCitySearchSuccessful(req, res) {
     //  this is decided by checkForNoCityParams function.
     try {
         const cityFound = new Promise((resolve, reject) => cityParamLocated(resolve, reject, req, res))
+        return cityFound
 
-        cityFound.then((result) => {
-            if (result) {
-                console.log("This shouldnt be false", result)
-                return result
-            } else {
-                console.log("Send out error with errorHandler", result)
-            }
-        })
     } catch (error) {
         console.log("Does not return error/rejection back to controller:", error)
     }
@@ -31,19 +24,32 @@ async function cityParamLocated(resolve, reject, req, res) {
     try {
         const url_object = new URL(req.url, `http://${req.headers.host}`)
         const URLPath = url_object.pathname
-        const URLSearch = url_object.search
 
-        const city_name_exists = (URLPath.split('/')).length > 3 ? true : false
-        console.log("cityParamLocated - city_name_exists: \n", city_name_exists)
+        //  Looks to see if the URL path has a fourth location, where city value is.
+        const city_param_exists = (URLPath.split('/')).length > 3 ? true : false
+        console.log("cityParamLocated - city_param_exists: \n", city_param_exists)
 
-        if (city_name_exists) {
+        //  Check to see if city value is not an empty string.
+        if (city_param_exists) {
+            //  Gets the value of the fourth location of the created array from split.
             const city_name = URLPath.split('/')[3]
             console.log("cityParamLocated - city_name: \n", city_name)
-            const cityData = await cityDataRetrieved(city_name)
-            resolve(cityData)
+            //  Checks to see if the fourth location is an empty string.
+            if(city_name !== "") {
+                //  Call function to validate the value of hour and continue hour data
+                //  retrieval. Promise resolves with returned data.
+                const cityData = await cityDataRetrieved(city_name)
+                //  The promise is finally fulfilled after running through all checks.
+                resolve(cityData) 
+            } else {
+                checkForNoCityParams(req, res, error = "noCityParamValueFound", url_object)
+                resolve(false)
+            }
         } else {
-            checkForNoCityParams(req, res, "Failed to locate city name in route.")
-            resolve(city_name_exists)
+            //  Decides how to end response with either an errorHandler call or a call
+            //  to getInstructions.
+            checkForNoCityParams(req, res, error = "noCityParamValueFound", url_object)
+            resolve(city_param_exists)
         }
     } catch (error) {
         console.log("Does not return error/rejection back to controller:", error)
@@ -60,27 +66,24 @@ async function cityDataRetrieved(city_name) {
     }
 }
 
-async function checkForNoCityParams(req, res, error) {
+async function checkForNoCityParams(req, res, error, url) {
     try {
         console.log("Inside checkForNoCityParams: ", error)
-        const urlObj = new URL(req.url, `http://${req.headers.host}`)
-        let root = urlObj.pathname
-
-        console.log("Another test:", root)
-        //  An if statement to validate if the request to /weather/city was sent with
-        //  either no parameters to the correct root or with wrong parameters/values.
-        if (root.toString().trim() === "/weather/city" || "/weather/city/") {
-            //  If true, this means somehow the initial check, within evaluateURL, for 
-            // the root url of city failed passing along the request to getHourWeather 
-            //  instead of to getInstructions. A very low chance of this happening. A
-            //  call to getInstructions with an error message will be sent.
-            console.log("Being sent to getInstructions from checkForNoCityParams: ", error)
+        console.log(url)
+        //  An if statement to validate that this is the correct error message 
+        //  being sent to getInstructions.
+        if (
+            url.pathname === "/weather/city" || 
+            url.pathname === "/weather/city/" 
+            ) {
+            console.log("Being sent to getInstructions from checkForNoHourParams: ", 
+            error)
             getInstructions(req, res, error = "Must follow city/ with a city name.")
         } else {
-            // Incorrect parameters or values were sent causing city_name_exists to 
-            // return false and the check for the root /city url to fail resulting in a
+            // Incorrect parameters or values were sent causing time_name_exists to 
+            // return false and the check for the root /hour url to fail resulting in a
             // call to the errorHandler to end the response.
-            return "This will be a call to errorHandler"
+            errorHandler.sendOutErrors(req, res, error)
         }
     } catch (error) {
         console.log("Something went wrong in checkForNoCityParams execution \n", error)

@@ -35,6 +35,7 @@ async function getCityWeather(req, res) {
         //  to errorHandler should of been made in one of the validation checks. If
         //  this try-catch results in a rejection it should be because the await call 
         //  was unable to be made, if that happens then the code in catch will execute.
+
         console.log("Returned cityWeatherData: ")
         console.log(cityWeatherData)
         if (cityWeatherData) {
@@ -42,10 +43,10 @@ async function getCityWeather(req, res) {
                 //  Sends data to user
                 res.writeHead(200, {"Content-Type": "application/json"})
                 res.end(JSON.stringify({"message": cityWeatherData}))
+            } else {
+                errorHandler.sendOutErrors(req, res, error = "noCityDataFound")
             }
-            errorHandler.sendOutErrors(req, res, error = "noCityDataFound")
         } 
-        
     } catch (error) {
         // errorHandler.sendOutErrors(res, req, error)
         console.log(error)
@@ -61,10 +62,14 @@ async function getHourWeather(req, res) {
         console.log("Returned hourWeatherData: ")
         console.log(hourWeatherData)
         if (hourWeatherData) {
-            //  Sends data to user
-            res.writeHead(200, {"Content-Type": "application/json"})
-            res.end(JSON.stringify({"message": hourWeatherData}))
-        }
+            if(hourWeatherData.length > 0) {
+                //  Sends data to user
+                res.writeHead(200, {"Content-Type": "application/json"})
+                res.end(JSON.stringify({"message": hourWeatherData}))
+            } else {
+                errorHandler.sendOutErrors(req, res, error = "noHourDataFound")
+            }
+        } 
     } catch (error) {
         console.log(error)
     }

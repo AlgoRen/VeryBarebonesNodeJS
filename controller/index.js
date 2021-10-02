@@ -8,8 +8,8 @@ const {
     getMainRouteInstructions
 } = require('../model/index')
 
-// const hourCityWeatherURL = new UrlPattern('/weather(/:anything)(/hour?time=)(:validhour)')
-// const allWeatherURL = new UrlPattern('/weather(/:anything)(/all)')
+const mainRouteInstructionsJSON = require('../data/instructions/forJSONSending/main_route.json')
+const hourRouteInstructionsJSON = require('../data/instructions/forJSONSending/weather_route_hour.json')
 
 
 async function homeRouteInstructions(req, res) {
@@ -54,7 +54,7 @@ async function errorRouteInstructions(req, res, error, routeInstructions) {
         res.writeHead(200, {"Content-Type": "application/json"})
         res.end(JSON.stringify([
             {"error": error}, 
-            {"message": routeInstructions}
+            {routeInstructions}
         ]))
     } catch (error) {
         errorHandler.sendOutErrors(req, res, error)
@@ -80,13 +80,13 @@ async function getInstructions(req, res, error, pathname) {
         switch (error) {
             case "Must follow city/ with a city name.":
                 console.log("Inside switch case getInstructions(): ", error)
-                instructionsToUse = await getMainRouteInstructions()
+                instructionsToUse = mainRouteInstructionsJSON
                 errorRouteInstructions(req, res, error, instructionsToUse)
                 break;
             case `Must follow hour with a ?time parameter 
             followed by a time value.`:
                 console.log("Inside switch case getInstructions(): ", error)
-                instructionsToUse = await getWeatherHourRouteInstructions()
+                instructionsToUse = hourRouteInstructionsJSON
                 errorRouteInstructions(req, res, error, instructionsToUse)
                 break;
             default:
