@@ -24,11 +24,11 @@ async function homeRouteInstructions(req, res) {
 }
 
 
-async function weatherHourInstructions(res) {
+async function weatherHourInstructions(req, res) {
     try {
         weatherHourInstructions = await getWeatherHourRouteInstructions()
         res.writeHead(200, {"Content-Type": "text/html"})
-        res.end(mainRouteInstructions)
+        res.end(weatherHourInstructions)
 
     } catch (error) {
         errorHandler.sendOutErrors(req, res, error)
@@ -36,11 +36,11 @@ async function weatherHourInstructions(res) {
 }
 
 
-async function weatherHoursInstructions(res) {
+async function weatherHoursInstructions(req, res) {
     try {
         weatherHoursInstructions = await getWeatherHoursRouteInstructions()
         res.writeHead(200, {"Content-Type": "text/html"})
-        res.end(mainRouteInstructions)
+        res.end(weatherHoursInstructions)
 
     } catch (error) {
         errorHandler.sendOutErrors(req, res, error)

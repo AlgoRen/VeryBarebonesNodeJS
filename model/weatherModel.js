@@ -39,10 +39,71 @@ function findHour(hour) {
     })
 }
 
+function findHours(to, from) {
+    //  Returns a new promise, rejects only if code fails to execute. Will return an
+    //  empty array if no data is found.
+    console.log("In findHours: ", to)
+    console.log("In findHours: ", from)
+    return new Promise((resolve, reject) => {
 
+        //  Loop through hours between the start_hour and end_hour
+        //  Add onto hoursObjects with filter method if time.from and time.to match
+        //  the hour that is being iterated through.
+
+        //  The starting hour will return the value of "time.to" to prevent the instance
+        //  that a weather object's time may be 20:50 to 21:50 if we only select based on
+        //  the time.from for the value of 20 we neglect 50 mins of weather data. Instead
+        //  we are using the approach to return the weather object that has the time value
+        //  leading up to our desired start hour.
+
+        let hoursObjects = []
+        let start_hour = to
+        let end_hour = from
+
+        //  Create a condition that checks if end_hour is less than start hour. 
+        //  For the reason/ condition if someone wants a time window from 10pm (hour 22)
+        //  to 2am (hour 2) simply incrementing through from start_hour to the end_hour 
+        //  will not work.
+
+        //  Checks for the null value of end_hour is true it will set a default of 23.
+        if (end_hour === null) {
+            end_hour = 23
+        }
+
+        if (start_hour === null) {
+            console.log("Must have a start_hour value")
+            resolve(false)
+        }
+
+        if (start_hour < end_hour) {
+
+            for (let index = start_hour; index <= end_hour; index++) {
+                console.log("Repition", index)
+                //  Using the 'time.to' value for the user's inputted 'from' value...
+                //  (shifted up one hour) is balanced with;
+                //  our need to get the hour leading up to the start_hour... 
+                //  (shifted down one hour).
+                let hourToSearch = index
+                const hourToAdd = weatherData.filter(
+                    object => object.time.to.split(':')[0] == hourToSearch)
+                
+                if (hourToAdd.length > 0) {
+                    hoursObjects.push(hourToAdd)
+                } 
+            }
+        } else {
+            console.log("Got to do a different method to get hours.")
+        }
+        console.log("Hours array:", hoursObjects)
+        resolve(hoursObjects)
+    })
+}
+//  Testing call
+// findHours()
 
 module.exports = {
     findAll,
     findCity,
-    findHour
+    findHour,
+    findHours
 }

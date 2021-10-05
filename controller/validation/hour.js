@@ -14,8 +14,13 @@ async function isHourSearchSuccessful(req, res) {
         if (hourFound) {
             return hourFound
         } else {
-            // Hour found returned false meaning that hour search was not successful.
-            console.log("Send out error with errorHandler", hourFound)
+            //  hourFound contains returned value of false meaning that no hours were 
+            //  found due to one of the following validation checks finding an error.
+            //  NOTE: If the response was not ended by this point an error that should
+            //  have been handled by the errorHandler, but was not, occured. 
+            console.log(`isHourSearchSuccessful completed all checks but during one of
+            the checks an error was found. Error was handled by errorHandler along with
+            the ending of the response.`, hourFound)
         }
     } catch (error) {
         //  Unable to create new Promise object for timeQueryLocated()
@@ -27,10 +32,9 @@ async function timeQueryLocated(resolve, reject, req, res) {
     try {
         const url_object = new URL(req.url, `http://${req.headers.host}`)
         const URLPath = url_object.pathname
-        const URLSearch = url_object.search
         console.log(URLPath)
 
-        //  Check for time param existence.
+        //  Check for time param existence, returns a boolean.
         const time_param_exists = url_object.searchParams.has('time')
         console.log(time_param_exists)
 
@@ -44,10 +48,10 @@ async function timeQueryLocated(resolve, reject, req, res) {
                 const hourData = await validateAndRetrieve(
                 resolve, reject, req, res, timeValue
                 )
-                // The promise is finally fulfilled after running through all checks.
+                //  The promise is finally fulfilled after running through all checks.
                 resolve(hourData) 
             } else {
-                //  Sends out an error message detailing
+                //  Sends out an error message detailing error that value is missing.
                 errorHandler.sendOutErrors(req, res, error = "noTimeParamValueFound")
                 resolve(false)
             }
@@ -88,14 +92,20 @@ async function validateAndRetrieve(resolve, reject, req, res, time) {
 
 async function validateHourInt(resolve, reject, res, intergerFromParam) {
     try {
-        let intergerInRange = false
+        let intergerInRange = false  // set to false by default until assigned to true.
+        //  Goes through int values 0 to 23 and assigns value true to intergerInRange
+        //  if condition is met, breaks, and continues to retrieving data.
         for (let index = 0; index < 24; index++) {
             if (intergerFromParam === index) {
                 intergerInRange = true
                 break
             }
         }
-
+        //  Set resolved data returned from await call to hoursData and resolves if
+        //  intergerInRange is found true or calls a resolve of false if condition 
+        //  was not changed to true within the previous for loop. This allows the
+        //  isHourSearchSuccessful to be settled as successful (meaning all validation
+        //  checks were completed successfully).
         if (intergerInRange) {
             const hourData = await hourDataRetrieved(intergerFromParam)
             console.log("hourData in validateHourInt", hourData)
@@ -104,7 +114,11 @@ async function validateHourInt(resolve, reject, res, intergerFromParam) {
             //  To determine if the call to validate the hour is between 0-23 or 
             //  if it is out of range
             console.log("Hour data is not valid")
+            //  An errorHandler call with the following error message to end response.
             errorHandler.sendOutErrors(req = null, res, error = "timeValueOutsideOfRange")
+            //  Resolves isHourSearchSuccessfully with a condition of false, meaning 
+            //  that all validation checks were successful but no hours were found.
+            //  Meaning that hoursFound will
             resolve(false)
         }
     } catch (error) {

@@ -9,6 +9,7 @@ const {
 } = require('./index')
 const {isCitySearchSuccessful} = require('./validation/city')
 const {isHourSearchSuccessful} = require('./validation/hour')
+const {isHoursSearchSuccessful} = require('./validation/hours')
 const weatherData = require('../model/weatherModel') // Weather model
 
 // @desc    Gets All Weather Data
@@ -46,7 +47,7 @@ async function getCityWeather(req, res) {
             } else {
                 errorHandler.sendOutErrors(req, res, error = "noCityDataFound")
             }
-        } 
+        } gggggggggggggggg
     } catch (error) {
         // errorHandler.sendOutErrors(res, req, error)
         console.log(error)
@@ -62,7 +63,7 @@ async function getHourWeather(req, res) {
         console.log("Returned hourWeatherData: ")
         console.log(hourWeatherData)
         if (hourWeatherData) {
-            if(hourWeatherData.length > 0) {
+            if (hourWeatherData.length > 0) {
                 //  Sends data to user
                 res.writeHead(200, {"Content-Type": "application/json"})
                 res.end(JSON.stringify({"message": hourWeatherData}))
@@ -70,6 +71,29 @@ async function getHourWeather(req, res) {
                 errorHandler.sendOutErrors(req, res, error = "noHourDataFound")
             }
         } 
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// @desc    Gets Hours Weather Data
+// @route   GET /weather/hours
+async function getHoursWeather(req, res) {
+    try {
+        //  Validation check for from & to parameters, correct hour values, and data.
+        console.log("Inside hoursWeatherData.")
+        const hoursWeatherData = await isHoursSearchSuccessful(req, res)
+        console.log("Returned hoursWeatherData: ")
+        console.log(hoursWeatherData)
+        // if (hoursWeatherData) {
+        //     if (hoursWeatherData.length > 0) {
+        //         //  Send data to user
+        //         res.writeHead(200, {"Content-Type": "application/json"})
+        //         res.end(JSON.stringify({"message": hoursWeatherData}))
+        //     } else {
+        //         errorHandler.sendOutErrors(req, res, error = "noHoursDataFound")
+        //     }
+        // }
     } catch (error) {
         console.log(error)
     }
@@ -103,7 +127,20 @@ async function evaluateWeatherURL(req, res) {
         }
 
         //  Matching urlString to appropriate 'get' function
-        if (URLSearch !== '' && rootHourURL.match(URLPath)) {
+        if (URLSearch !== '' && rootHoursURL.match(URLPath)) {
+            //  Get all weather data for a specific hour: getHourWeather()
+            console.log("Matched for hours")
+
+            try {
+                console.log("hours: Is it getting to this try-catch?")
+                getHoursWeather(req, res)
+            } catch (error) {
+                console.log(error)
+                errorHandler.sendOutErrors(req, res, error)
+            }
+        }
+        //  Matching urlString to appropriate 'get' function
+        else if (URLSearch !== '' && rootHourURL.match(URLPath)) {
             //  Get all weather data for a specific hour: getHourWeather()
             console.log("Matched for hour")
 
