@@ -1,9 +1,37 @@
+//  TODO: Move error handling logic in checkIntIsInRange to here.
+function OutOfRangeErrors(req, res, errorKeys) {
+    //  Sends out errors based on values in keysOutOfRange array. 
+    if (errorKeys[0] === "from" && errorKeys[1] === "to") {
+        console.log("Both hour properties are out of range.")
+        sendOutErrors(req, res, error = "BothValuesOutsideOfRange")
+    } else if (errorKeys[0] === "from") {
+        console.log("Hours <from> property is out of range.")
+        sendOutErrors(req, res, error = "fromValueOutsideOfRange")
+    } else if (errorKeys[1] === "to") {
+        console.log("Hours <to> property is out of range.")
+        sendOutErrors(req, res, error = "toValueOutsideOfRange")
+    }
+}
+
 //  A helper function to send out helpful responses depending on what went wrong.
 function sendOutErrors(req, res, errorCode) {
     console.log("is this the right error code?")
     console.log(errorCode)
 
     switch (errorCode) {
+        // ~~~~ Hours orientated errors ~~~
+        case 'BothValuesOutsideOfRange':
+            res.writeHead(400, {"Content-Type": "application/json"})
+            res.end(JSON.stringify({"message": "Error: The search params 'from' and 'to' value must be between 0 and 23. Please try again with a value between 0 and 23."}))
+            break;        
+        case 'fromValueOutsideOfRange':
+            res.writeHead(400, {"Content-Type": "application/json"})
+            res.end(JSON.stringify({"message": "Error: The search param 'from' value must be between 0 and 23. Please try again with a value between 0 and 23."}))
+            break;
+        case 'toValueOutsideOfRange':
+            res.writeHead(400, {"Content-Type": "application/json"})
+            res.end(JSON.stringify({"message": "Error: The search param 'to' value must be between 0 and 23. Please try again with a value between 0 and 23."}))
+            break;
         // ~~~~ Hour orientated errors ~~~
         case 'noHourDataFound':
             res.writeHead(404, {"Content-Type": "application/json"})
@@ -43,6 +71,11 @@ function sendOutErrors(req, res, errorCode) {
             res.writeHead(404, {"Content-Type": "application/json"})
             res.end(JSON.stringify({"message": "Unable to find a route that matches this url. Check for a typo."}))
             break;
+        // ~~~~ Runtime error ~~~
+        case 'runtimeError':
+            res.writeHead(404, {"Content-Type": "application/json"})
+            res.end(JSON.stringify({"message": "A runtime error occured and was not able to continue."}))
+            break;
         // ~~~~ Fallback error / Async-catch error ~~~
         default:
             res.writeHead(500, {"Content-Type": "application/json"})
@@ -57,5 +90,6 @@ function sendOutErrors(req, res, errorCode) {
 
 
 module.exports = {
-    sendOutErrors
+    sendOutErrors,
+    OutOfRangeErrors
 }

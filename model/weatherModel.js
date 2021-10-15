@@ -3,7 +3,6 @@ const weatherData = require('../data/weather.json') // Weather data from weather
 function findAll() {
     return new Promise((resolve, reject) => {
         resolve(weatherData)
-        // reject('Something went wrong.') ?
     })
 }
 
@@ -93,6 +92,7 @@ function findHours(to, from) {
             }
         } else {
             console.log("Got to do a different method to get hours.")
+            resolve("The ability to return non-sequential hour data is not yet supported.")
         }
         console.log("Hours array:", hoursObjects)
         resolve(hoursObjects)
