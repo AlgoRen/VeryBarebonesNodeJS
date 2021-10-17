@@ -47,7 +47,7 @@ async function getCityWeather(req, res) {
             } else {
                 errorHandler.sendOutErrors(req, res, error = "noCityDataFound")
             }
-        } gggggggggggggggg
+        } 
     } catch (error) {
         // errorHandler.sendOutErrors(res, req, error)
         console.log(error)

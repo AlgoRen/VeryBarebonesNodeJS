@@ -1,20 +1,24 @@
 <h1>General Overview of the /weather route within ZBK's API:</h1>
-To get a quick example of the data that ZBK's /weather route send a GET request
-to  '/weather/all'. This returns all weather data currently stored.
+To get a quick example of ZBK's /weather route, send a GET request
+to '/weather/all'. This route returns all weather data currently stored.
 
-To get weather data pertaining to a specific city send a GET request to route 
+To get weather data for a specific city send, a GET request to route 
 'weather/city/{name}' replace {name} with the city name of your choice. 
-NOTE: Currently only supports one city, Apopka. Hahahaha XD
+NOTE: Currently only has hardcoded data for one city, Apopka. 
 
 <h2>How to use the weather/hours route:</h2>
 <h3>Send GET requests only!</h3>
-To get weather data for a specific hours attach the parameter from={0-23} 
-followed by the '&' sign followed by to={0-23} to get weather data for the
-hours between those times. Both the from and to parameter are inclusive. The 
-from and to parameter use a 24 hour clock. An example of a call: 
-'weather/hour?from=19&to=23' 
-...this will get all data ZBK has for those hours. Or you may call:
-'weather/city/apopka/hours?from=19&to=23' to get those hours' weather in that city,
-as only one city is currently supported both GET request will send the same data.
+To get weather data for specific hours attach the parameter from={0-23} followed by 
+the '&' sign followed by to={0-23} to get weather data between those hours. Both the 
+from and to parameter are inclusive. The from and to parameter uses a 24-hour clock. 
+An example of a call: 
+'weather/hours?from=19&to=23' 
+this will get all data ZBK has for those hours (7:00 pm to 11:59 pm). Or you may call:
+'weather/hours?from=19' 
+to get weather starting at 19:00 (7:00 pm) till the end of the day at 23:59 (11:59 pm). 
+If there is no to parameter, missing, or wrong to value, then a to parameter is created
+and set to a default of 23 will be set.
+All returned data is hardcoded data for the city of Apopka. An update with the 
+capability and data of retrieving other cities is in development.
 
 <strong>Have fun and explore! -ZBK</strong>
